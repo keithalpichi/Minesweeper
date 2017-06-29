@@ -17,7 +17,7 @@ Game.prototype.start = function () {
     if (row === 'exit') { break }
     const col = prompt('Provide the column for the cell you want to uncover or \'exit\' to leave the game? ')
     if (col === 'exit') { break }
-    this._board.checkCell(parseInt(row), parseInt(col))
+    this._board.checkCell(parseInt(row - 1), parseInt(col - 1))
   }
 
   this.gameOver()

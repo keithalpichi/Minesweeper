@@ -43,7 +43,7 @@ Cell.prototype.toString = function () {
   if (this._visible) {
     return this._value === 4 ? ' [ X ] ' : ` [ ${this._value} ] `
   } else {
-    return ' [ ] '
+    return ' [  ] '
   }
 }
 

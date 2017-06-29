@@ -182,7 +182,17 @@ Board.prototype.printBoard = function () {
   console.log('\n')
   console.log('M I N E S W E E P E R   B O A R D')
   console.log('\n')
-  console.log(this._board.join('\n\n'))
+  let ruler = ['      ']
+  for (let i = 0; i < this._boardSize; i++) {
+    ruler.push(`| ${i + 1} | `)
+  }
+  console.log(ruler.join(' '))
+  console.log('\n')
+  ruler = []
+  for (let i = 0; i < this._boardSize; i++) {
+    ruler.push(`| ${i + 1} | ` + this._board[i].join(''))
+  }
+  console.log(ruler.join('\n\n'))
   console.log('\n')
 }
 
