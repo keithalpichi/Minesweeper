@@ -17,8 +17,13 @@ const Cell = function (value, row, col) {
   this._value = value
 }
 
+Cell.prototype.isZeroCell = function () {
+  return this._value === 0
+}
+
 Cell.prototype.show = function () {
   this._visible = true
+  return this
 }
 
 Cell.prototype.incrementValue = function () {

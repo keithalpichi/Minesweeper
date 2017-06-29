@@ -1,10 +1,4 @@
-const readline = require('readline')
-const Board = require('./src/Board')
-// const rl = readline.createInterface({
-//   input: process.stdin,
-//   output: process.stdout,
-//   prompt: 'Bot> '
-// })
+const Game = require('./src/Game')
 
-const board = new Board(5)
-board.printBoard()
+const game = new Game()
+game.start()

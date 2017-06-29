@@ -9,13 +9,15 @@ const Board = function (boardSize, bombCount) {
   boardSize = boardSize || 5
   bombCount = bombCount || boardSize * 2
   if (boardSize * boardSize / 2 < bombCount) {
-    throw new Error('Choose less bombs')
+    throw new Error('Choose more bombs')
   }
 
   const self = this
 
   this._boardSize = boardSize
   this._bombCount = bombCount
+  this._coveredCells = boardSize * boardSize
+  this._validBoard = true
   this._board = initializeBoard()
 
   function initializeBoard () {
@@ -56,8 +58,8 @@ const Board = function (boardSize, bombCount) {
       board[row - 1][col] = board[row - 1][col].incrementValue()
     }
     // topright
-    if (board[row - 1] && board[row - 1][row + 1]) {
-      board[row - 1][row + 1] = board[row - 1][row + 1].incrementValue()
+    if (board[row - 1] && board[row - 1][col + 1]) {
+      board[row - 1][col + 1] = board[row - 1][col + 1].incrementValue()
     }
     // right
     if (board[row][col + 1]) {
@@ -82,7 +84,103 @@ const Board = function (boardSize, bombCount) {
   }
 }
 
+Board.prototype.validBoard = function () {
+  return this._validBoard
+}
+
+Board.prototype.checkCell = function (row, col) {
+  const cell = this._board[row][col]
+  if (cell.containsBomb() || this._coveredCells === 0) {
+    console.log(`\nBomb found at row: ${row} and col: ${col}\n`)
+    this._validBoard = false
+    this.revealAllCells()
+  } else {
+    if (cell.isZeroCell()) {
+      this.revealAroundZeroCell(row, col)
+    }
+    this._board[row][col] = cell.show()
+    this._coveredCells--
+  }
+}
+
+Board.prototype.revealAllCells = function () {
+  for (var i = 0; i < this._boardSize; i++) {
+    for (var j = 0; j < this._boardSize; j++) {
+      this._board[i][j] = this._board[i][j].show()
+    }
+  }
+}
+
+Board.prototype.revealAroundZeroCell = function (row, col) {
+  const board = this._board
+  if (board[row - 1] && board[row - 1][col - 1]) {
+    board[row - 1][col - 1] = board[row - 1][col - 1].show()
+    this._coveredCells--
+    if (board[row - 1][col - 1].isZeroCell()) {
+      this.revealAroundZeroCell(row - 1, col - 1)
+    }
+  }
+  // top
+  if (board[row - 1]) {
+    board[row - 1][col] = board[row - 1][col].show()
+    this._coveredCells--
+    if (board[row - 1][col].isZeroCell()) {
+      this.revealAroundZeroCell(row - 1, col)
+    }
+  }
+  // topright
+  if (board[row - 1] && board[row - 1][col + 1]) {
+    board[row - 1][col + 1] = board[row - 1][col + 1].show()
+    this._coveredCells--
+    if (board[row - 1][col + 1].isZeroCell()) {
+      this.revealAroundZeroCell(row - 1, col + 1)
+    }
+  }
+  // right
+  if (board[row][col + 1]) {
+    board[row][col + 1] = board[row][col + 1].show()
+    this._coveredCells--
+    if (board[row][col + 1].isZeroCell()) {
+      this.revealAroundZeroCell(row, col + 1)
+    }
+  }
+  // bottomright
+  if (board[row + 1] && board[row + 1][col + 1]) {
+    board[row + 1][col + 1] = board[row + 1][col + 1].show()
+    this._coveredCells--
+    if (board[row + 1][col + 1].isZeroCell()) {
+      this.revealAroundZeroCell(row + 1, col + 1)
+    }
+  }
+  // bottom
+  if (board[row + 1]) {
+    board[row + 1][col] = board[row + 1][col].show()
+    this._coveredCells--
+    if (board[row + 1][col].isZeroCell()) {
+      this.revealAroundZeroCell(row + 1, col)
+    }
+  }
+  // bottomleft
+  if (board[row + 1] && board[row + 1][col - 1]) {
+    board[row + 1][col - 1] = board[row + 1][col - 1].show()
+    this._coveredCells--
+    if (board[row + 1][col - 1].isZeroCell()) {
+      this.revealAroundZeroCell(row + 1, col - 1)
+    }
+  }
+  // left
+  if (board[row][col - 1]) {
+    board[row][col - 1] = board[row][col - 1].show()
+    this._coveredCells--
+    if (board[row][col - 1].isZeroCell()) {
+      this.revealAroundZeroCell(row, col - 1)
+    }
+  }
+}
+
 Board.prototype.printBoard = function () {
+  console.log('\n')
+  console.log('M I N E S W E E P E R   B O A R D')
   console.log('\n')
   console.log(this._board.join('\n\n'))
   console.log('\n')

@@ -4,5 +4,8 @@
   "description": "The classical minesweeper played within the console",
   "main": "index.js",
   "author": "Keith Alpichi",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "prompt-sync": "^4.1.5"
+  }
 }
