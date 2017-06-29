@@ -1,0 +1,8 @@
+{
+  "name": "minesweeper",
+  "version": "1.0.0",
+  "description": "The classical minesweeper played within the console",
+  "main": "index.js",
+  "author": "Keith Alpichi",
+  "license": "MIT"
+}
