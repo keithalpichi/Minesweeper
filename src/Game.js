@@ -9,14 +9,23 @@ const Game = function () {
 
 Game.prototype.start = function () {
   const number = parseInt(prompt('What size would you like the game board to be? 4, 5, 6, ...? '))
-  this._board = new Board(parseInt(number))
+  if (isNaN(number)) {
+    throw new Error('Provide a number for the size of the board')
+  }
+  this._board = new Board(number)
 
   while (this._board.validBoard()) {
     this._board.printBoard()
     const row = prompt('Provide the row for the cell you want to uncover or \'exit\' to leave the game? ')
     if (row === 'exit') { break }
+    if (row < 1 || row > number) {
+      throw new Error('Provide a number within the size of the board')
+    }
     const col = prompt('Provide the column for the cell you want to uncover or \'exit\' to leave the game? ')
     if (col === 'exit') { break }
+    if (col < 1 || col > number) {
+      throw new Error('Provide a number within the size of the board')
+    }
     this._board.checkCell(parseInt(row - 1), parseInt(col - 1))
   }
 

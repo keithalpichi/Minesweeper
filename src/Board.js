@@ -91,7 +91,7 @@ Board.prototype.validBoard = function () {
 Board.prototype.checkCell = function (row, col) {
   const cell = this._board[row][col]
   if (cell.containsBomb() || this._coveredCells === 0) {
-    console.log(`\nBomb found at row: ${row} and col: ${col}\n`)
+    console.log(`\n \\ \\ || / / \n\n K A B O O M !!! \n\n / / || \\ \\ \n\n Bomb found at row: ${row} and col: ${col}\n`)
     this._validBoard = false
     this.revealAllCells()
   } else {
